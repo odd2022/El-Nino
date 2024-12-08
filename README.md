@@ -11,8 +11,11 @@ Semaine 1. Preprocessing pour avoir les données labellisées.
 Semaine 2. Faire les prédictions pour 1, 2 et 3 mois (chacun prend un modèle) (au début on split facile dans l'ordre du temps)
 Semaine 3. Tester des modèles plus complexe + Faire le diapo
 
+Ce qui a ete fait depuis le debut: 
+- faire une baseline de LDA et trouver la PCA qui marche le mieux.
+- tester différents modèles et faire la PCA dessus.
 
 Questions pour le prof lundi: 
-1) ajouter plus de variables: ajouter 2 mois plutot qu'un ? Dans ce cas comment procéder ? 
+1) ajouter plus de variables: ajouter 2 mois plutot qu'un pour augmenter la complexité du modèle ? ou juste ajouter un mois mais avant ? Dans ce cas comment procéder ? 
 2) transformation polynomiale des inputs: comment procéder?
 3) Faire une linear regression et courbe de validation ?
