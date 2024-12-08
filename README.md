@@ -18,7 +18,8 @@ Ce qui a ete fait depuis le debut:
   A faire:
   - Faire Linear Regression et Regularization ?
   - Faire Transfo Polynomiales des Entrées ?
-  - Changer les Inputs: Ajouter la Sea pressure et les données de mois 
+  - Changer les Inputs: Ajouter la Sea pressure et les données de mois
+  - regarder les tutoriels pour avoir des idées de quoi changer 
 
 Questions pour le prof lundi: 
 1) ajouter plus de variables: ajouter 2 mois plutot qu'un pour augmenter la complexité du modèle ? ou juste ajouter un mois mais avant ? Dans ce cas comment procéder ? 
