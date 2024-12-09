@@ -71,7 +71,7 @@ def split_scale_data(X, y, RANDOM_SPLIT=False, train_size=374, verbose=True):
 #Let's define a model for all the evaluations 
 def evaluate_model(model, model_name, X_train, y_train, X_test, y_test):
     model.fit(X_train, y_train)
-    #let's copmute the scores
+    #let's compute the scores
     y_pred = model.predict(X_test)
     accuracy = accuracy_score(y_test, y_pred)
 
