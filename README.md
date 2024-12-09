@@ -20,6 +20,7 @@ Ce qui a ete fait depuis le debut:
  
  
 Nathan: PCA avec + de 100, Ridge, Lasso, regarder les tutos + regarder les plots 
+
 Audrey: regarder le preprocess de la data + MLP + tutos (corrélations)
 
 Suite: Répéter la meme procédure pour 2 mois, 3mois et sea pressure. 
