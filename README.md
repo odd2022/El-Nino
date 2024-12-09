@@ -19,7 +19,7 @@ Ce qui a ete fait depuis le debut:
   - regarder les tutoriels pour avoir des idées de quoi changer
  
  
-Nathan: PCA avec + de 100, Ridge, Lasso, regarder les tutos + regarder les plots 
+Nathan: Ridge, Lasso, regarder les tutos + regarder les plots 
 
 Audrey: regarder le preprocess de la data + MLP + tutos (corrélations)
 
