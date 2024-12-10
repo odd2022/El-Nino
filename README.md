@@ -15,12 +15,11 @@ Machine Learning for Climate and Energy Project with Nathan Toumi
 
 ### A Faire
  #### Nathan: 
- - Terminer Ridge et Lasso
- - Faire un MLP
+ - verifier la pipeline d'audrey
  - pred 2, 3 months in advance 
 
 #### Audrey :
-- Ajouter Ridge et Lasso à mes affaires, en particulier au seasonal cycle
+- Ajouter Ridge et Lasso au seasonal cycle et conclure l'affaire
 - Ajouter la sea pressure
 - voir comment tout marche 
 
