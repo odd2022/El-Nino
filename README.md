@@ -15,8 +15,8 @@ Machine Learning for Climate and Energy Project with Nathan Toumi
 
 ### A Faire
  #### Nathan: 
- - verifier la pipeline d'audrey
- - pred 2, 3 months in advance 
+ - J'ai des questions sur ta pipeline
+ - pred 2, 3 months in advance => Done !!
 
 #### Audrey :
 - Ajouter Ridge et Lasso au seasonal cycle et conclure l'affaire

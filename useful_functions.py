@@ -3,7 +3,7 @@ from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.pipeline import Pipeline
 from sklearn.model_selection import GridSearchCV
 from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
-from sklearn.linear_model import LinearRegression, LogisticRegression
+from sklearn.linear_model import LogisticRegression, RidgeClassifier
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 from sklearn.svm import SVC
 from sklearn.neural_network import MLPClassifier
@@ -64,4 +64,46 @@ def split_scale_data(X, y, RANDOM_SPLIT=False, train_size=374, verbose=True):
         print("Shape of y_test:", y_test.shape)
 
     return(X_train, X_test, y_train, y_test)
+
+
+############# VALIDATION FUNCTION FOR LASSO OR RIDGE ###############
+
+def validation(X_train, y_train, X_validation, y_validation, low_power, high_power, nb_points, Ridge=True):
+    
+    # Hyperparameter tuning: Evaluate different lambda (regularization strength) values
+    parameter_values = np.logspace(low_power, high_power, nb_points)
+
+
+    accuracy_train_cv_list = []
+    accuracy_valid_list = []
+    coefficients = []
+
+    for param in parameter_values:
+        if Ridge:
+            classifier = RidgeClassifier(alpha = param)
+            classifier.fit(X_train, y_train)
+        else:
+            classifier = LogisticRegression(penalty = 'l1', solver = 'liblinear', C = param)
+            classifier.fit(X_train, y_train)
+
+        # Store accuracies for training and validation data
+        accuracy_train_cv_list.append(classifier.score(X_train, y_train))
+        accuracy_valid_list.append(classifier.score(X_validation, y_validation))
+
+        # Store coefficients
+        coefficients.append(classifier.coef_)
+
+    coefficients = np.array(coefficients)
+
+    # Find the lambda value that maximizes validation accuracy
+    max_accuracy_index = np.argmax(accuracy_valid_list)
+    max_param = parameter_values[max_accuracy_index]
+    max_accuracy_validation = accuracy_valid_list[max_accuracy_index]
+    train_accuracy = accuracy_train_cv_list[max_accuracy_index]
+
+    print(f"Best parameter value after validation: {max_param:.1f}")
+    print(f"Accuracy for training: {train_accuracy:.3f}")
+    print(f"Accuracy for validation: {max_accuracy_validation:.3f}")
+
+    return max_param, max_accuracy_validation, train_accuracy, parameter_values, coefficients, accuracy_train_cv_list, accuracy_valid_list
 
