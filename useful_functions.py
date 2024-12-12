@@ -35,25 +35,26 @@ def get_data(Path):
     print("First 25 elements of y:", y[:25])
     return(X,y)
 
-def split_scale_data(X, y, RANDOM_SPLIT=False, train_size=374, verbose=True):
+def split_scale_data(X, y, RANDOM_SPLIT=False, train_size=374, verbose=True, scale=True):
     """
     X, y: Inputs and outputs
     RANDOM_SPLIT: Boolean, if False splits for train and test are done in in time order, if True, splits are random
     train_size: number of data in the train sample (test_size=474 - train_size)
     verbose: if True, the function prints information about the shape of the outputs data sets
+    scale: if True, data are scaled
     """
     # Split the data
     if RANDOM_SPLIT:
         X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=train_size, random_state=42)
     else:
         X_train, X_test, y_train, y_test = X[:train_size], X[train_size:], y[:train_size], y[train_size:]
-
-    # Introduce a scaler
-    scaler = StandardScaler()
-    scaler.fit(X_train)
-    # Standardize the train and test data
-    X_train = scaler.transform(X_train)
-    X_test = scaler.transform(X_test)
+    if scale:
+        # Introduce a scaler
+        scaler = StandardScaler()
+        scaler.fit(X_train)
+        # Standardize the train and test data
+        X_train = scaler.transform(X_train)
+        X_test = scaler.transform(X_test)
 
     # Check dimensions
     if verbose:
