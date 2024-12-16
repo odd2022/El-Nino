@@ -18,7 +18,6 @@ from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 
 
 ############# DATA PREPROCESSING ###############
-
 def get_data(Path):
     """
     Path: Path of the preprocessed data you want to get
@@ -70,9 +69,22 @@ def split_scale_data(X, y, RANDOM_SPLIT=False, train_size=374, verbose=True, sca
 
 
 ############# VALIDATION FUNCTION FOR LASSO OR RIDGE ###############
-
 def validation(X_train, y_train, X_validation, y_validation, low_power, high_power, nb_points, Ridge=True):
-    
+    """
+    Function to perform hyper parameter tuning for the Ridge and Lasso models
+    Inputs:
+    X_train, y_train, X_validation, y_validation: input data 
+    low_power, high_power, nb_points: floats to chose the range and number of lambda parameter to evaluate
+    Ridge: Bool to precise to the function if the model is Ridge or Lasso 
+    Outputs: 
+    max_param: parameter of the model which performs the best on the test set
+    max_accuracy_validation: the best test accuracy reached 
+    train_accuracy: the train accuracy of the model which performs the best on the test set
+    parameter_values: list of the parameters of each model trained 
+    coefficients: coefficients of the model which performs the best on the test set
+    accuracy_train_cv_list: list of train accuracies of the model trained with different parameters
+    accuracy_valid_list: list of test accuracies of the model trained with different parameters
+    """
     # Hyperparameter tuning: Evaluate different lambda (regularization strength) values
     parameter_values = np.logspace(low_power, high_power, nb_points)
 
@@ -110,7 +122,18 @@ def validation(X_train, y_train, X_validation, y_validation, low_power, high_pow
 
     return max_param, max_accuracy_validation, train_accuracy, parameter_values, coefficients, accuracy_train_cv_list, accuracy_valid_list
 
+
+############# EVALUATION FUNCTION FOR ALL MODELS ###############
 def test_model(model_to_test, X_train, X_test, y_train, y_test, verbose=True):
+    """
+    Function to evaluate each model we selected, print the train and test performances and the confusion matrix
+    Inputs: 
+    model_to_test: the model we want to evaluate 
+    X_train, X_test, y_train, y_test: input data
+    verbose: boolean to say if we want to print information about the evaluation or just return the results 
+    Outputs: 
+    accuracy_score_test, roc_auc_score_test the scores of the model on the test set 
+    """
     
     # Define the classifier
     model = model_to_test
@@ -160,8 +183,19 @@ def test_model(model_to_test, X_train, X_test, y_train, y_test, verbose=True):
     return accuracy_score_test, roc_auc_score_test
 
 
+############# VALIDATION FUNCTION FOR PCA DIMENSIONS ###############
 def validation_PCA(X_train_cv, y_train_cv, X_validation, y_validation, model, dim_max, verbose = True): 
-    """ Pipeline for validation of the parameter p of PCA for dimensionality reduction """
+    """ 
+    Pipeline for validation of the parameter p of PCA for dimensionality reduction 
+    Inputs: 
+    X_train_cv, y_train_cv, X_validation, y_validation: input data 
+    model: the model we want to test in combination with PCA 
+    dim_max: controls the maximal number of dimnesions we want to do PCA with 
+    verbose: boolean to say if we want to print information about the cross-validation or just return the results
+    Outputs: 
+    best_p_value: dimension on which the model performs the best on the test set 
+    best_test_score_pca: best accuracy achieved on the test set 
+    """
     
     p_values = np.linspace(1, dim_max, dim_max).astype(int)
     p_values = p_values.astype(int)
@@ -211,3 +245,46 @@ def validation_PCA(X_train_cv, y_train_cv, X_validation, y_validation, model, di
         plt.grid()
 
     return best_p_value, best_test_score_pca
+
+
+############# PLOT COMPARISIONS BETWEEN MODELS ###############
+def plot_score(model_names, auc_scores, accuracy_scores):
+    """plots histograms to have a visual representation of scores from different models 
+    Inputs: 
+    models_names: list of model names to plot on the graph 
+    auc_scores: list of auc of the corresponding models 
+    accuracy_scores: list of accuracies of the corresponding models 
+    """
+    x = np.arange(len(model_names))
+    fig, ax = plt.subplots(figsize = (12, 7))
+
+    #plot the histograms of accuracy and auc 
+    auc_bars = ax.bar(x - 0.175, auc_scores, 0.35, label = 'AUC', color = 'skyblue')
+    accuracy_bars = ax.bar(x + 0.175, accuracy_scores, 0.35, label = 'Accuracy', color = 'lightcoral')
+
+    #plot horizontal lines for the highest accuracy and auc
+    max_auc = max(auc_scores)
+    max_accuracy = max(accuracy_scores)
+    ax.hlines(y = max_auc, xmin = -0.5, xmax = len(model_names)-0.5, colors = 'skyblue', linestyles = '--', linewidth = 1.5) 
+    ax.hlines(y = max_accuracy, xmin = -0.5, xmax = len(model_names)-0.5, colors = 'lightcoral', linestyles = '--', linewidth = 1.5)  
+    ax.text(len(model_names)-0.5, max_auc + 0.02, f'Best AUC: {max_auc:.3f}', color='skyblue', ha='right')
+    ax.text(len(model_names)-0.5, max_accuracy + 0.02, f'Best Accuracy: {max_accuracy:.3f}', color='lightcoral', ha='right')
+
+    ax.set_xlabel('Model')
+    ax.set_ylabel('Scores')
+    ax.set_ylim(0, 1)
+    ax.set_title('AUC and Accuracy Scores of Different Models')
+    ax.set_xticks(x)
+    ax.set_xticklabels(model_names, rotation = 45, ha = 'right')
+    ax.set_xticklabels(model_names)
+    ax.legend()
+
+    #annotations for the value of each bar
+    for bar in auc_bars + accuracy_bars:
+        ax.annotate(f'{bar.get_height():.3f}', 
+                    xy = (bar.get_x() + bar.get_width() / 2, bar.get_height()), 
+                    xytext = (0, 3), 
+                    textcoords = "offset points",
+                    ha = 'center', va = 'bottom')
+
+    plt.show()
