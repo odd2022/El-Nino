@@ -12,4 +12,4 @@ What is the prediction horizon ( a few months or a year in advance)?
 Classify sea surface temperature (SST) into one of two categories: El Niño, Neutral Conditions
 
 ![El Nino Region](images/El_Nino_Index_3.4.png)
-![El Nino Region](images/variance_wosc.png)
+![El Nino Region](images/Temperatures_anomalies.png)
